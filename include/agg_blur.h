@@ -174,7 +174,8 @@ namespace agg {
     pod_vector<color_type> m_stack;
   };
   //}}}
-  //{{{  template<class T=unsigned> struct stack_blur_calc_rgba {
+  //{{{
+  template<class T=unsigned> struct stack_blur_calc_rgba {
     typedef T value_type;
     value_type r,g,b,a;
 

@@ -283,3 +283,6 @@ $RECYCLE.BIN/
 *.exe
 *.exe
 *.opendb
+*.~h
+*.exe
+*.exe
