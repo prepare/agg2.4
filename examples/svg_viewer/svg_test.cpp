@@ -1,3 +1,4 @@
+//{{{  includes
 #include <stdio.h>
 #include <stdlib.h>
 #include "agg_basics.h"
@@ -9,13 +10,12 @@
 #include "platform/agg_platform_support.h"
 #include "ctrl/agg_slider_ctrl.h"
 #include "agg_svg_parser.h"
-
+//}}}
 #define AGG_BGR24
 #include "../pixel_formats.h"
 #pragma comment(lib,"libexpat")
 
 enum { flip_y = false };
-
 
 class the_application : public agg::platform_support
 {
@@ -38,7 +38,7 @@ class the_application : public agg::platform_support
     bool   m_drag_flag;
 
 public:
-
+    //{{{
     the_application(agg::pix_format_e format, bool flip_y) :
         agg::platform_support(format, flip_y),
         m_path(),
@@ -77,20 +77,27 @@ public:
         m_rotate.range(-180.0, 180.0);
         m_rotate.value(0.0);
     }
+    //}}}
 
+    //{{{
     void parse_svg(const char* fname)
     {
         agg::svg::parser p(m_path);
         p.parse(fname);
+
         m_path.arrange_orientations();
         m_path.bounding_rect(&m_min_x, &m_min_y, &m_max_x, &m_max_y);
+
         caption(p.title());
     }
+    //}}}
 
+    //{{{
     virtual void on_resize(int cx, int cy)
     {
     }
-
+    //}}}
+    //{{{
     virtual void on_draw()
     {
         typedef agg::pixfmt_bgra32 pixfmt;
@@ -112,7 +119,7 @@ public:
         mtx *= agg::trans_affine_scaling(m_scale.value());
         mtx *= agg::trans_affine_rotation(agg::deg2rad(m_rotate.value()));
         mtx *= agg::trans_affine_translation((m_min_x + m_max_x) * 0.5 + m_x, (m_min_y + m_max_y) * 0.5 + m_y + 30);
-        
+
         m_path.expand(m_expand.value());
         start_timer();
         m_path.render(ras, sl, ren, mtx, rb.clip_box(), 1.0);
@@ -126,7 +133,7 @@ public:
         agg::render_ctrl(ras, sl, rb, m_rotate);
 
 
-        char buf[128]; 
+        char buf[128];
         agg::gsv_text t;
         t.size(10.0);
         t.flip(true);
@@ -160,14 +167,17 @@ public:
         //    }
         //}
     }
+    //}}}
 
+    //{{{
     virtual void on_mouse_button_down(int x, int y, unsigned flags)
     {
         m_dx = x - m_x;
         m_dy = y - m_y;
         m_drag_flag = true;
     }
-
+    //}}}
+    //{{{
     virtual void on_mouse_move(int x, int y, unsigned flags)
     {
         if(flags == 0)
@@ -182,12 +192,14 @@ public:
             force_redraw();
         }
     }
-
+    //}}}
+    //{{{
     virtual void on_mouse_button_up(int x, int y, unsigned flags)
     {
         m_drag_flag = false;
     }
-
+    //}}}
+    //{{{
     virtual void on_key(int x, int y, unsigned key, unsigned flags)
     {
         if(key == ' ')
@@ -214,13 +226,10 @@ public:
         }
     }
 
-
-
+    //}}}
 };
 
-
-
-
+//{{{
 int agg_main(int argc, char* argv[])
 {
     the_application app(agg::pix_format_bgra32, flip_y);
@@ -258,6 +267,4 @@ int agg_main(int argc, char* argv[])
     }
     return 1;
 }
-
-
-
+//}}}

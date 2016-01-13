@@ -1,30 +1,11 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.3
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-//
-// SVG path renderer.
-//
-//----------------------------------------------------------------------------
-
+//{{{  includes
 #include <stdio.h>
 #include "agg_svg_path_renderer.h"
+//}}}
 
-namespace agg
-{
-namespace svg
-{
-
+namespace agg {
+  namespace svg {
+    //{{{
     //------------------------------------------------------------------------
     path_renderer::path_renderer() :
         m_curved(m_storage),
@@ -38,8 +19,9 @@ namespace svg
     {
         m_curved_trans_contour.auto_detect_orientation(false);
     }
+    //}}}
 
-
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::remove_all()
     {
@@ -48,7 +30,9 @@ namespace svg
         m_attr_stack.remove_all();
         m_transform.reset();
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::begin_path()
     {
@@ -56,11 +40,12 @@ namespace svg
         unsigned idx = m_storage.start_new_path();
         m_attr_storage.add(path_attributes(cur_attr(), idx));
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::end_path()
     {
-        if(m_attr_storage.size() == 0) 
+        if(m_attr_storage.size() == 0)
         {
             throw exception("end_path : The path was not begun");
         }
@@ -70,21 +55,25 @@ namespace svg
         m_attr_storage[m_attr_storage.size() - 1] = attr;
         pop_attr();
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::move_to(double x, double y, bool rel)          // M, m
     {
         if(rel) m_storage.rel_to_abs(&x, &y);
         m_storage.move_to(x, y);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::line_to(double x,  double y, bool rel)         // L, l
     {
         if(rel) m_storage.rel_to_abs(&x, &y);
         m_storage.line_to(x, y);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::hline_to(double x, bool rel)                   // H, h
     {
@@ -97,7 +86,8 @@ namespace svg
             m_storage.line_to(x, y2);
         }
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::vline_to(double y, bool rel)                   // V, v
     {
@@ -110,38 +100,42 @@ namespace svg
             m_storage.line_to(x2, y);
         }
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::curve3(double x1, double y1,                   // Q, q
                                double x,  double y, bool rel)
     {
-        if(rel) 
+        if(rel)
         {
             m_storage.rel_to_abs(&x1, &y1);
             m_storage.rel_to_abs(&x,  &y);
         }
         m_storage.curve3(x1, y1, x, y);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::curve3(double x, double y, bool rel)           // T, t
     {
-//        throw exception("curve3(x, y) : NOT IMPLEMENTED YET");
-        if(rel) 
+    //        throw exception("curve3(x, y) : NOT IMPLEMENTED YET");
+        if(rel)
         {
             m_storage.curve3_rel(x, y);
-        } else 
+        } else
         {
             m_storage.curve3(x, y);
         }
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::curve4(double x1, double y1,                   // C, c
-                               double x2, double y2, 
+                               double x2, double y2,
                                double x,  double y, bool rel)
     {
-        if(rel) 
+        if(rel)
         {
             m_storage.rel_to_abs(&x1, &y1);
             m_storage.rel_to_abs(&x2, &y2);
@@ -149,27 +143,31 @@ namespace svg
         }
         m_storage.curve4(x1, y1, x2, y2, x, y);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::curve4(double x2, double y2,                   // S, s
                                double x,  double y, bool rel)
     {
         //throw exception("curve4(x2, y2, x, y) : NOT IMPLEMENTED YET");
-        if(rel) 
+        if(rel)
         {
             m_storage.curve4_rel(x2, y2, x, y);
-        } else 
+        } else
         {
             m_storage.curve4(x2, y2, x, y);
         }
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::close_subpath()
     {
         m_storage.end_poly(path_flags_close);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     path_attributes& path_renderer::cur_attr()
     {
@@ -179,15 +177,18 @@ namespace svg
         }
         return m_attr_stack[m_attr_stack.size() - 1];
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::push_attr()
     {
-        m_attr_stack.add(m_attr_stack.size() ? 
+        m_attr_stack.add(m_attr_stack.size() ?
                          m_attr_stack[m_attr_stack.size() - 1] :
                          path_attributes());
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::pop_attr()
     {
@@ -197,7 +198,9 @@ namespace svg
         }
         m_attr_stack.remove_last();
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::fill(const rgba8& f)
     {
@@ -205,7 +208,8 @@ namespace svg
         attr.fill_color = f;
         attr.fill_flag = true;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::stroke(const rgba8& s)
     {
@@ -213,67 +217,80 @@ namespace svg
         attr.stroke_color = s;
         attr.stroke_flag = true;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::even_odd(bool flag)
     {
         cur_attr().even_odd_flag = flag;
     }
-    
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::stroke_width(double w)
     {
         cur_attr().stroke_width = w;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::fill_none()
     {
         cur_attr().fill_flag = false;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::stroke_none()
     {
         cur_attr().stroke_flag = false;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::fill_opacity(double op)
     {
         cur_attr().fill_color.opacity(op);
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::stroke_opacity(double op)
     {
         cur_attr().stroke_color.opacity(op);
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::line_join(line_join_e join)
     {
         cur_attr().line_join = join;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::line_cap(line_cap_e cap)
     {
         cur_attr().line_cap = cap;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::miter_limit(double ml)
     {
         cur_attr().miter_limit = ml;
     }
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     trans_affine& path_renderer::transform()
     {
         return cur_attr().transform;
     }
+    //}}}
 
+    //{{{
     //------------------------------------------------------------------------
     void path_renderer::parse_path(path_tokenizer& tok)
     {
@@ -303,7 +320,7 @@ namespace svg
                 case 'H': case 'h':
                     hline_to(tok.last_number(), cmd == 'h');
                     break;
-                
+
                 case 'Q': case 'q':
                     arg[0] = tok.last_number();
                     for(i = 1; i < 4; i++)
@@ -353,7 +370,6 @@ namespace svg
             }
         }
     }
-
-}
-}
-
+    //}}}
+    }
+  }

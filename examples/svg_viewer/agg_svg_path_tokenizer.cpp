@@ -1,38 +1,19 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.3
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-//
-// SVG path tokenizer.
-//
-//----------------------------------------------------------------------------
+//{{{  includes
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "agg_svg_exception.h"
 #include "agg_svg_path_tokenizer.h"
+//}}}
 
+namespace agg {
+  namespace svg {
 
-namespace agg 
-{ 
-namespace svg
-{
-
-    //------------------------------------------------------------------------
     const char path_tokenizer::s_commands[]   = "+-MmZzLlHhVvCcSsQqTtAaFfPp";
     const char path_tokenizer::s_numeric[]    = ".Ee0123456789";
     const char path_tokenizer::s_separators[] = " ,\t\n\r";
 
+    //{{{
     //------------------------------------------------------------------------
     path_tokenizer::path_tokenizer()
         : m_path(0), m_last_command(0), m_last_number(0.0)
@@ -41,8 +22,8 @@ namespace svg
         init_char_mask(m_numeric_mask,    s_numeric);
         init_char_mask(m_separators_mask, s_separators);
     }
-
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_tokenizer::set_path_str(const char* str)
     {
@@ -50,27 +31,27 @@ namespace svg
         m_last_command = 0;
         m_last_number = 0.0;
     }
-
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     void path_tokenizer::init_char_mask(char* mask, const char* char_set)
     {
         memset(mask, 0, 256/8);
-        while(*char_set) 
+        while(*char_set)
         {
             unsigned c = unsigned(*char_set++) & 0xFF;
             mask[c >> 3] |= 1 << (c & 7);
         }
     }
-
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     bool path_tokenizer::next()
     {
         if(m_path == 0) return false;
 
         // Skip all white spaces and other garbage
-        while(*m_path && !is_command(*m_path) && !is_numeric(*m_path)) 
+        while(*m_path && !is_command(*m_path) && !is_numeric(*m_path))
         {
             if(!is_separator(*m_path))
             {
@@ -96,9 +77,8 @@ namespace svg
         }
         return parse_number();
     }
-
-
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     double path_tokenizer::next(char cmd)
     {
@@ -111,8 +91,8 @@ namespace svg
         }
         return last_number();
     }
-
-
+    //}}}
+    //{{{
     //------------------------------------------------------------------------
     bool path_tokenizer::parse_number()
     {
@@ -134,11 +114,6 @@ namespace svg
         m_last_number = atof(buf);
         return true;
     }
-
-
-} //namespace svg
-} //namespace agg
-
-
-
-
+    //}}}
+    } //namespace svg
+  } //namespace agg

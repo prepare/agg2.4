@@ -1,22 +1,3 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.3
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-//
-// SVG parser.
-//
-//----------------------------------------------------------------------------
-
 #ifndef AGG_SVG_PARSER_INCLUDED
 #define AGG_SVG_PARSER_INCLUDED
 
@@ -59,12 +40,12 @@ namespace svg
         unsigned parse_scale(const char* str);
         unsigned parse_skew_x(const char* str);
         unsigned parse_skew_y(const char* str);
-        
+
         bool parse_attr(const char* name, const char* value);
         bool parse_name_value(const char* nv_start, const char* nv_end);
         void copy_name(const char* start, const char* end);
         void copy_value(const char* start, const char* end);
-        
+
     private:
         path_renderer& m_path;
         path_tokenizer m_tokenizer;

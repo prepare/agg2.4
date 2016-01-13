@@ -1,22 +1,3 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.3
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-//
-// SVG exception
-//
-//----------------------------------------------------------------------------
-
 #ifndef AGG_SVG_EXCEPTION_INCLUDED
 #define AGG_SVG_EXCEPTION_INCLUDED
 
@@ -24,8 +5,8 @@
 #include <string.h>
 #include <stdarg.h>
 
-namespace agg 
-{ 
+namespace agg
+{
 namespace svg
 {
     class exception
@@ -37,11 +18,11 @@ namespace svg
         }
 
         exception() : m_msg(0) {}
-          
+
         exception(const char* fmt, ...) :
             m_msg(0)
         {
-            if(fmt) 
+            if(fmt)
             {
                 m_msg = new char [4096];
                 va_list arg;
@@ -56,7 +37,7 @@ namespace svg
         {
             if(m_msg) strcpy(m_msg, exc.m_msg);
         }
-        
+
         const char* msg() const { return m_msg; }
 
     private:

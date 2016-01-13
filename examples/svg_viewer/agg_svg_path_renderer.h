@@ -1,21 +1,3 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.3
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-//
-// SVG path renderer.
-//
-//----------------------------------------------------------------------------
 #ifndef AGG_SVG_PATH_RENDERER_INCLUDED
 #define AGG_SVG_PATH_RENDERER_INCLUDED
 
@@ -43,10 +25,10 @@ namespace svg
         unsigned count() const { return m_count; }
 
         void rewind(unsigned path_id) { m_source->rewind(path_id); }
-        unsigned vertex(double* x, double* y) 
-        { 
-            ++m_count; 
-            return m_source->vertex(x, y); 
+        unsigned vertex(double* x, double* y)
+        {
+            ++m_count;
+            return m_source->vertex(x, y);
         }
 
     private:
@@ -124,7 +106,7 @@ namespace svg
 
 
     //============================================================================
-    // Path container and renderer. 
+    // Path container and renderer.
     class path_renderer
     {
     public:
@@ -161,15 +143,15 @@ namespace svg
                     double x,  double y, bool rel=false);
         void curve3(double x, double y, bool rel=false);    // T, t
         void curve4(double x1, double y1,                   // C, c
-                    double x2, double y2, 
+                    double x2, double y2,
                     double x,  double y, bool rel=false);
         void curve4(double x2, double y2,                   // S, s
                     double x,  double y, bool rel=false);
         void close_subpath();                               // Z, z
 
-//        template<class VertexSource> 
-//        void add_path(VertexSource& vs, 
-//                      unsigned path_id = 0, 
+//        template<class VertexSource>
+//        void add_path(VertexSource& vs,
+//                      unsigned path_id = 0,
 //                      bool solid_path = true)
 //        {
 //            m_storage.add_path(vs, path_id, solid_path);
@@ -177,7 +159,7 @@ namespace svg
 
 
         unsigned vertex_count() const { return m_curved_count.count(); }
-        
+
 
         // Call these functions on <g> tag (start_element, end_element respectively)
         void push_attr();
@@ -203,7 +185,7 @@ namespace svg
             m_storage.arrange_orientations_all_paths(path_flags_ccw);
         }
 
-        // Expand all polygons 
+        // Expand all polygons
         void expand(double value)
         {
             m_curved_trans_contour.width(value);
@@ -221,14 +203,14 @@ namespace svg
             agg::bounding_rect(trans, *this, 0, m_attr_storage.size(), x1, y1, x2, y2);
         }
 
-        // Rendering. One can specify two additional parameters: 
+        // Rendering. One can specify two additional parameters:
         // trans_affine and opacity. They can be used to transform the whole
         // image and/or to make it translucent.
-        template<class Rasterizer, class Scanline, class Renderer> 
-        void render(Rasterizer& ras, 
+        template<class Rasterizer, class Scanline, class Renderer>
+        void render(Rasterizer& ras,
                     Scanline& sl,
-                    Renderer& ren, 
-                    const trans_affine& mtx, 
+                    Renderer& ren,
+                    const trans_affine& mtx,
                     const rect_i& cb,
                     double opacity=1.0)
         {
@@ -279,7 +261,7 @@ namespace svg
                     m_curved_stroked.inner_join(inner_round);
                     m_curved_stroked.approximation_scale(scl);
 
-                    // If the *visual* line width is considerable we 
+                    // If the *visual* line width is considerable we
                     // turn on processing of curve cusps.
                     //---------------------
                     if(attr.stroke_width * scl > 1.0)

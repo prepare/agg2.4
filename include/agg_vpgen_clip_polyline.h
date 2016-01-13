@@ -1,34 +1,11 @@
-//----------------------------------------------------------------------------
-// Anti-Grain Geometry - Version 2.4
-// Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
-//
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
-// This software is provided "as is" without express or implied
-// warranty, and with no claim as to its suitability for any purpose.
-//
-//----------------------------------------------------------------------------
-// Contact: mcseem@antigrain.com
-//          mcseemagg@yahoo.com
-//          http://www.antigrain.com
-//----------------------------------------------------------------------------
-
-#ifndef AGG_VPGEN_CLIP_POLYLINE_INCLUDED
-#define AGG_VPGEN_CLIP_POLYLINE_INCLUDED
-
+#pragma once
 #include "agg_basics.h"
 
-namespace agg
-{
-
-    //======================================================vpgen_clip_polyline
-    //
-    // See Implementation agg_vpgen_clip_polyline.cpp
-    //
-    class vpgen_clip_polyline
-    {
+namespace agg {
+  class vpgen_clip_polyline {
     public:
-        vpgen_clip_polyline() : 
+        //{{{
+        vpgen_clip_polyline() :
             m_clip_box(0, 0, 1, 1),
             m_x1(0),
             m_y1(0),
@@ -37,7 +14,8 @@ namespace agg
             m_move_to(false)
         {
         }
-
+        //}}}
+        //{{{
         void clip_box(double x1, double y1, double x2, double y2)
         {
             m_clip_box.x1 = x1;
@@ -46,6 +24,7 @@ namespace agg
             m_clip_box.y2 = y2;
             m_clip_box.normalize();
         }
+        //}}}
 
         double x1() const { return m_clip_box.x1; }
         double y1() const { return m_clip_box.y1; }
@@ -71,8 +50,4 @@ namespace agg
         unsigned      m_vertex;
         bool          m_move_to;
     };
-
-}
-
-
-#endif
+  }
